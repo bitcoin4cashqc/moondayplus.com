@@ -26,7 +26,7 @@ May your strategy lead you to victory!
 
 ******************************************
 
-Official Website: http://www.moondayplus.com
+Official Website: https://www.moondayplus.com
 
 IMO deployed: https://etherscan.io/address/0x8aB4657A160c1F8a78a03AC598E5F3C2Fd0c2882
 
