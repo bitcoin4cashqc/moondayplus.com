@@ -32,7 +32,7 @@ IMO deployed: https://etherscan.io/address/0x8aB4657A160c1F8a78a03AC598E5F3C2Fd0
 
 MD+ ERC20 deployed: https://etherscan.io/address/0xCB696c86917175DfB4F0037DDc4f2e877a9F081A
 
-Reward Pool deployed: Before the end of the IMO
+Reward Pool deployed: https://etherscan.io/address/0x6dBD235B85Cb1678FB5ECF56029EfF663B4b8fBF
 
 DAO deployed: Soon
 
