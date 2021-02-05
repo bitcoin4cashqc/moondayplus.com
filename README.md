@@ -34,7 +34,7 @@ MD+ ERC20 deployed: https://etherscan.io/address/0xCB696c86917175DfB4F0037DDc4f2
 
 Reward Pool deployed: https://etherscan.io/address/0x6dBD235B85Cb1678FB5ECF56029EfF663B4b8fBF
 
-DAO deployed: Soon
+DAO deployed: https://etherscan.io/address/0x839DDc270252A63072c30b8eE277D685301251a3
 
 NFT deployed: Soon
 
