@@ -1,6 +1,165 @@
 pragma solidity ^0.6.2;
 
 
+
+
+/**
+ * @dev Wrappers over Solidity's arithmetic operations with added overflow
+ * checks.
+ *
+ * Arithmetic operations in Solidity wrap on overflow. This can easily result
+ * in bugs, because programmers usually assume that an overflow raises an
+ * error, which is the standard behavior in high level programming languages.
+ * `SafeMath` restores this intuition by reverting the transaction when an
+ * operation overflows.
+ *
+ * Using this library instead of the unchecked operations eliminates an entire
+ * class of bugs, so it's recommended to use it always.
+ */
+library SafeMath {
+    /**
+     * @dev Returns the addition of two unsigned integers, reverting on
+     * overflow.
+     *
+     * Counterpart to Solidity's `+` operator.
+     *
+     * Requirements:
+     *
+     * - Addition cannot overflow.
+     */
+    function add(uint256 a, uint256 b) internal pure returns (uint256) {
+        uint256 c = a + b;
+        require(c >= a, "SafeMath: addition overflow");
+
+        return c;
+    }
+
+    /**
+     * @dev Returns the subtraction of two unsigned integers, reverting on
+     * overflow (when the result is negative).
+     *
+     * Counterpart to Solidity's `-` operator.
+     *
+     * Requirements:
+     *
+     * - Subtraction cannot overflow.
+     */
+    function sub(uint256 a, uint256 b) internal pure returns (uint256) {
+        return sub(a, b, "SafeMath: subtraction overflow");
+    }
+
+    /**
+     * @dev Returns the subtraction of two unsigned integers, reverting with custom message on
+     * overflow (when the result is negative).
+     *
+     * Counterpart to Solidity's `-` operator.
+     *
+     * Requirements:
+     *
+     * - Subtraction cannot overflow.
+     */
+    function sub(uint256 a, uint256 b, string memory errorMessage) internal pure returns (uint256) {
+        require(b <= a, errorMessage);
+        uint256 c = a - b;
+
+        return c;
+    }
+
+    /**
+     * @dev Returns the multiplication of two unsigned integers, reverting on
+     * overflow.
+     *
+     * Counterpart to Solidity's `*` operator.
+     *
+     * Requirements:
+     *
+     * - Multiplication cannot overflow.
+     */
+    function mul(uint256 a, uint256 b) internal pure returns (uint256) {
+        // Gas optimization: this is cheaper than requiring 'a' not being zero, but the
+        // benefit is lost if 'b' is also tested.
+        // See: https://github.com/OpenZeppelin/openzeppelin-contracts/pull/522
+        if (a == 0) {
+            return 0;
+        }
+
+        uint256 c = a * b;
+        require(c / a == b, "SafeMath: multiplication overflow");
+
+        return c;
+    }
+
+    /**
+     * @dev Returns the integer division of two unsigned integers. Reverts on
+     * division by zero. The result is rounded towards zero.
+     *
+     * Counterpart to Solidity's `/` operator. Note: this function uses a
+     * `revert` opcode (which leaves remaining gas untouched) while Solidity
+     * uses an invalid opcode to revert (consuming all remaining gas).
+     *
+     * Requirements:
+     *
+     * - The divisor cannot be zero.
+     */
+    function div(uint256 a, uint256 b) internal pure returns (uint256) {
+        return div(a, b, "SafeMath: division by zero");
+    }
+
+    /**
+     * @dev Returns the integer division of two unsigned integers. Reverts with custom message on
+     * division by zero. The result is rounded towards zero.
+     *
+     * Counterpart to Solidity's `/` operator. Note: this function uses a
+     * `revert` opcode (which leaves remaining gas untouched) while Solidity
+     * uses an invalid opcode to revert (consuming all remaining gas).
+     *
+     * Requirements:
+     *
+     * - The divisor cannot be zero.
+     */
+    function div(uint256 a, uint256 b, string memory errorMessage) internal pure returns (uint256) {
+        require(b > 0, errorMessage);
+        uint256 c = a / b;
+        // assert(a == b * c + a % b); // There is no case in which this doesn't hold
+
+        return c;
+    }
+
+    /**
+     * @dev Returns the remainder of dividing two unsigned integers. (unsigned integer modulo),
+     * Reverts when dividing by zero.
+     *
+     * Counterpart to Solidity's `%` operator. This function uses a `revert`
+     * opcode (which leaves remaining gas untouched) while Solidity uses an
+     * invalid opcode to revert (consuming all remaining gas).
+     *
+     * Requirements:
+     *
+     * - The divisor cannot be zero.
+     */
+    function mod(uint256 a, uint256 b) internal pure returns (uint256) {
+        return mod(a, b, "SafeMath: modulo by zero");
+    }
+
+    /**
+     * @dev Returns the remainder of dividing two unsigned integers. (unsigned integer modulo),
+     * Reverts with custom message when dividing by zero.
+     *
+     * Counterpart to Solidity's `%` operator. This function uses a `revert`
+     * opcode (which leaves remaining gas untouched) while Solidity uses an
+     * invalid opcode to revert (consuming all remaining gas).
+     *
+     * Requirements:
+     *
+     * - The divisor cannot be zero.
+     */
+    function mod(uint256 a, uint256 b, string memory errorMessage) internal pure returns (uint256) {
+        require(b != 0, errorMessage);
+        return a % b;
+    }
+}
+
+
 // 
 /**
  * @dev Interface of the ERC20 standard as defined in the EIP.
@@ -96,24 +255,56 @@ interface Uniswapv2Pair {
 
 }
 
+
+/**
+ * @title MoonDayPlus DAO
+ * @dev Made by SoliditySam and Grass, fuck bad mouths saying I didnt made OG tendies
+ *
+ * 
+          ,
+       _/ \_     *
+      <     >
+*      /.'.\                    *
+             *    ,-----.,_           ,
+               .'`         '.       _/ \_
+    ,         /              `\    <     >
+  _/ \_      |  ,.---.         \    /.'.\
+ <     >     \.'    _,'.---.    ;   `   `
+  /.'.\           .'  (-(0)-)   ;
+  `   `          /     '---'    |  *
+                /    )          |             *
+     *         |  .-;           ;        ,
+               \_/ |___,'      ;       _/ \_ 
+          ,  |`---.MOON|_       /     <     >
+ *      _/ \_ \         `     /        /.'.\
+       <     > '.          _,'         `   `
+ MD+    /.'.\    `'------'`     *   
+        `   `
+ 
+ 
+ */
+
 // The DAO contract itself
 contract MoondayPlusDAO {
-
+    
+        using SafeMath for uint256;
 
     // The minimum debate period that a generic proposal can have
-       //uint constant minProposalDebatePeriod = 2 weeks;
-       //testnet
-       uint constant minProposalDebatePeriod = 10 minutes;
+       uint256 public minProposalDebatePeriod = 2 weeks;
+      
        
        // Period after which a proposal is closed
        // (used in the case `executeProposal` fails because it throws)
-       uint constant executeProposalPeriod = 10 days;
+       uint256 public executeProposalPeriod = 10 days;
+       
+       
+       
      
 
 
-       IERC20 MoondayToken;
+       IERC20 public MoondayToken;
 
-       Uniswapv2Pair MoondayTokenPair;
+       Uniswapv2Pair public MoondayTokenPair;
 
 
        // Proposals to spend the DAO's ether
@@ -128,9 +319,17 @@ contract MoondayPlusDAO {
 
 
 
-        uint256 V = 2 ether;
+        uint256 public V = 2 ether;
+        //median fixed
         
-        uint256 W = 20;
+        uint256 public W = 40;
+        //40% of holders approx
+        
+        uint256 public B = 5;
+        //0.005% vote
+        
+        uint256 public C = 10;
+        //10* 0.005% vote
      
 
   
@@ -157,7 +356,7 @@ contract MoondayPlusDAO {
            // Simple mapping to check if a shareholder has voted against it
            mapping (address => bool) votedNo;
            // Address of the shareholder who created the proposal
-           address payable creator;
+           address creator;
        }
 
 
@@ -197,7 +396,8 @@ contract MoondayPlusDAO {
 
 
     receive() payable external {
-       //in case we should get ether there but I doubt
+       //we should get ether there but I doubt
+       revert();
     }
 
     function newProposal(
@@ -211,19 +411,28 @@ contract MoondayPlusDAO {
             || _debatingPeriod > 8 weeks
             || msg.sender == address(this) //to prevent a 51% attacker to convert the ether into deposit
             )
-                revert();
+                revert("error in debating periods");
 
+        uint256 received = determineAm().mul(C);
+
+		
+	    
+	    MoondayToken.burn(msg.sender, received);
+	    
       
-
-        _proposalID = proposals.length;
-        Proposal storage p = proposals[_proposalID];
+       
+        
+       
+        Proposal memory p;
         p.recipient = _recipient;
         p.description = _description;
         p.proposalHash = keccak256(abi.encodePacked(_recipient, _transactionData));
-        p.votingDeadline = block.timestamp + _debatingPeriod;
+        p.votingDeadline = block.timestamp.add( _debatingPeriod );
         p.open = true;
         //p.proposalPassed = False; // that's default
         p.creator = msg.sender;
+        proposals.push(p);
+        _proposalID = proposals.length;
        
 
         emit ProposalAdded(
@@ -249,31 +458,12 @@ contract MoondayPlusDAO {
         
         uint256 received = determineAm();
 
-        
-        
-        MoondayToken.burn(msg.sender, received);
-        
-        
+		
+	    
+	    MoondayToken.burn(msg.sender, received);
+	    
+	    
 
-        Proposal storage p = proposals[_proposalID];
-
-        unVote(_proposalID);
-
-        if (_supportsProposal) {
-            p.yea += MoondayToken.balanceOf(msg.sender);
-            p.votedYes[msg.sender] = true;
-        } else {
-            p.nay += MoondayToken.balanceOf(msg.sender);
-            p.votedNo[msg.sender] = true;
-        }
-
-        votingRegister[msg.sender].push(_proposalID);
-        emit Voted(_proposalID, _supportsProposal, msg.sender);
-    }
-
-    function unVote(uint _proposalID) public {
-        
-        //you cannot unvote since you burned. crazy spender, you should decide yourself
         Proposal storage p = proposals[_proposalID];
 
         if (block.timestamp >= p.votingDeadline) {
@@ -287,7 +477,21 @@ contract MoondayPlusDAO {
         if (p.votedNo[msg.sender]) {
             revert();
         }
+        
+
+        if (_supportsProposal) {
+            p.yea += 1;
+            p.votedYes[msg.sender] = true;
+        } else {
+            p.nay += 1;
+            p.votedNo[msg.sender] = true;
+        }
+
+        votingRegister[msg.sender].push(_proposalID);
+        emit Voted(_proposalID, _supportsProposal, msg.sender);
     }
+
+
 
 
     function executeProposal(
@@ -298,7 +502,7 @@ contract MoondayPlusDAO {
         Proposal storage p = proposals[_proposalID];
 
         // If we are over deadline and waiting period, assert proposal is closed
-        if (p.open && block.timestamp > p.votingDeadline + executeProposalPeriod) {
+        if (p.open && block.timestamp > p.votingDeadline.add(executeProposalPeriod)) {
             p.open = false;
             return false;
         }
@@ -316,7 +520,7 @@ contract MoondayPlusDAO {
         
         
          // If we are over deadline and waiting period, assert proposal is closed
-        if (p.open && now > p.votingDeadline + executeProposalPeriod) {
+        if (p.open && now > p.votingDeadline.add(executeProposalPeriod)) {
             p.open = false;
             return false;
         }
@@ -361,13 +565,60 @@ contract MoondayPlusDAO {
 
  
    
-    //admin like dao functions
-    // function changeProposalDeposit(uint _proposalDeposit) external {
-    //     if (msg.sender != address(this)) {
-    //         revert();
-    //     }
-    //     proposalDeposit = _proposalDeposit;
-    // }
+    //admin like dao functions change median ETH :(
+     function changeMedianV(uint256 _V) external {
+        
+        require(msg.sender == address(this));
+         
+        V = _V;
+     }
+     
+    //admin like dao functions change % of holders
+     function changeHoldersW(uint256 _W) external {
+        
+        require(msg.sender == address(this));
+         
+        W = _W;
+     }
+
+
+    //admin like dao functions change % burn vote
+     function changeVoteB(uint256 _B) external {
+        
+        require(msg.sender == address(this));
+         
+        B = _B;
+     }
+     
+     //admin like dao functions change % burn vote multiplier for proposal
+     function changeVoteC(uint256 _C) external {
+        
+        require(msg.sender == address(this));
+         
+        C = _C;
+     }
+
+
+
+     //admin like dao functions change minProposalDebatePeriod
+     function changeMinProposalDebatePeriod(uint256 _minProposalDebatePeriod) external {
+        
+        require(msg.sender == address(this));
+         
+        minProposalDebatePeriod = _minProposalDebatePeriod;
+     }
+
+
+    //admin like dao functions change executeProposalPeriod
+     function changeexecuteProposalPeriod(uint256 _executeProposalPeriod) external {
+        
+        require(msg.sender == address(this));
+         
+        executeProposalPeriod = _executeProposalPeriod;
+     }
+     
+     
+
 
 
  
@@ -375,14 +626,14 @@ contract MoondayPlusDAO {
     function minQuorum() public view returns (uint _minQuorum) {
         (uint256 reserve0,uint256 reserve1,) = MoondayTokenPair.getReserves();
    
-        uint256 R = ((MoondayToken.totalSupply() / (V * (reserve1 / reserve0))) * W) / 100;
+        uint256 R = ((MoondayToken.totalSupply().div( (V.mul((reserve1.div(reserve0)))))).mul(W)).div(100);
         
         return R;
     }
     
     
      function determineAm() public view returns (uint _amount) {
-        uint256 burn = (MoondayToken.totalSupply()  * 5 / 100000);
+        uint256 burn = (MoondayToken.totalSupply().mul(B)).div(100000);
         
         return burn;
     }
@@ -397,3 +648,4 @@ contract MoondayPlusDAO {
 
   
 }
+

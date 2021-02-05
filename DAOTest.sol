@@ -3,7 +3,7 @@ pragma solidity >=0.6.0 <0.8.0;
 
 contract DAOTest {
     
-    
+    uint256 public W = 40;
     
     function doIt(address recipient,bytes calldata _transactionData) external payable {
         
@@ -24,14 +24,23 @@ contract DAOTest {
     }
     
     
-    function what(address _who) pure external returns (bytes memory) {
+    function what(uint256 _how) pure external returns (bytes memory) {
         
         
-        bytes memory payload = abi.encodeWithSignature("transferOwnership(address)", _who);
+        bytes memory payload = abi.encodeWithSignature("changeHoldersW(uint256)", _how);
         
         return payload;
         
     }
+    
+    
+    //admin like dao functions change % of holders
+     function changeHoldersW(uint256 _W) external {
+        
+        require(msg.sender == address(this),"the fuck");
+         
+        W = _W;
+     }
     
     
 }
