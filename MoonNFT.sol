@@ -1794,9 +1794,9 @@ interface Uniswapv2Pair {
 
 
 
-interface nftStrategy {
+interface nftRandom {
     
-    function returnData(uint256 _nftId) external view returns (uint256, uint256,uint256);
+    function determine() external returns (uint256 types, uint256 power, uint256 energy);
     
     
     
@@ -1837,47 +1837,79 @@ contract MDPCollectible is Ownable, ERC721 {
 
     uint256 _tokenIds = 0;
 
+    using SafeMath for uint256;
 
     
+    struct MoonData {
+
+        uint256 nftType;
+        
+        
+        uint256 nftPower;
+        
+        uint256 nftEnergy;
+        
+    }
     
+    struct UserData {
+
+        uint256 userPower;
+        
+        uint256 userEnergy;
+        
+        uint256 lastWithdrawDate;
+        
+        uint256 whitelist;
+        
+    }
 
 
-    uint256 public maxmint = 50;
+    MoonData[] public moondata;
+    
+    mapping (address => UserData) public userdata;
 
 
-    mapping (address =>  uint256) public whitelist;
+    uint256 public maxmint = 500;
 
+
+   
+
+    
 
     IERC20 public MoondayToken;
 
     Uniswapv2Pair public MoondayTokenPair;
     
+    nftRandom public nftRandomContract;
     
-    nftStrategy public nftStrategyContract;
+    address public strategyContract;
+
 
 
     uint256 public B = 5;
         //0.005% vote
         
-    uint256 public C = 20;
+    uint256 public C = 10;
     //10* 0.005% vote
    
 
 
 
-    constructor(string memory baseURI_, IERC20 _moontoken, Uniswapv2Pair _MoondayTokenPair) ERC721("MoonDayPlus Collectible", "MDPNFT") public {
+    constructor(string memory baseURI_, IERC20 _moontoken, Uniswapv2Pair _MoondayTokenPair, nftRandom _NftRandom) ERC721("MoonDayPlus Collectible", "MDPNFT") public {
 
         _setBaseURI(baseURI_);
 
         MoondayToken = _moontoken;
         
         MoondayTokenPair = _MoondayTokenPair;
+        
+        nftRandomContract = _NftRandom;
     }
 
 
   
     function setWhitelist(address _address, uint256 _add) external onlyOwner() {
-        whitelist[_address] =   whitelist[_address].add(_add);
+         userdata[_address].whitelist =   userdata[_address].whitelist.add(_add);
     }
 
 
@@ -1906,12 +1938,34 @@ contract MDPCollectible is Ownable, ERC721 {
      }
      
      //admin like dao functions change power and energy strat
-     function changeDataStrat(nftStrategy _newContract) external onlyOwner() {
+     function changeDataStrat(nftRandom _newContract) external onlyOwner() {
         
        
-        nftStrategyContract = _newContract;
+        nftRandomContract = _newContract;
         
      }
+     
+     
+     //admin like dao functions change reward strat
+     function changeStrat(address _newContract) external onlyOwner() {
+        
+       
+        strategyContract = _newContract;
+        
+     }
+     
+     
+     //function for reward strategy to update last withdraw date
+     function updateDate(uint256 _newDate, address _who) external  {
+        
+        require(_msgSender() == strategyContract);
+       
+        userdata[_who].lastWithdrawDate = _newDate;
+        
+     }
+     
+     
+     
      
      
       function determineAm() public view returns (uint _amount) {
@@ -1923,27 +1977,38 @@ contract MDPCollectible is Ownable, ERC721 {
    
    
    
-   
- 
-    
-    function determineData(uint256 _nftId) public view returns (uint256 _type, uint256 _power, uint256 _energy) {
-        
-        
-        (_type, _power, _energy) = nftStrategyContract.returnData(_nftId);
-        
-        return (_type,_power,_energy);
-        
-    }
 
 
 
 
     function awardItem(address receiver/*, string memory tokenUR*/) internal returns (bool) {
         
-        require(_tokenIds < maxmint, "Minting over");
+        require(_tokenIds < maxmint, "Minting Max");
 
         uint256 newItemId = _tokenIds;
         _mint(receiver, newItemId);
+
+        (uint256 _type, uint256 _power, uint256 _energy) = nftRandomContract.determine();
+
+
+
+        //set users
+        userdata[receiver].userPower = userdata[receiver].userPower.add(_power);
+        userdata[receiver].userEnergy = userdata[receiver].userEnergy.add(_energy);
+
+    
+       
+        MoonData memory _moon = MoonData({
+                    nftType : _type ,
+                    nftPower : _power ,
+                    nftEnergy : _energy 
+                });
+                
+        moondata.push(_moon);
+        
+        
+
+
         //_setTokenURI(newItemId, tokenURI);
 
         _tokenIds = _tokenIds.add(1);
@@ -1960,22 +2025,22 @@ contract MDPCollectible is Ownable, ERC721 {
 
         //check whitelist
 
-        if(whitelist[_msgSender()] > 0){
+        if(userdata[_msgSender()].whitelist > 0){
 
-            whitelist[_msgSender()] = whitelist[_msgSender()].sub(1);
+            userdata[_msgSender()].whitelist = userdata[_msgSender()].whitelist.sub(1);
 
         }else{
 
            uint256 received = determineAm().mul(C);
 
-		
-	    
-	       MoondayToken.burn(msg.sender, received);
+        
+        
+           MoondayToken.burn(msg.sender, received);
 
         }
         
         //require it
-        require(awardItem(_msgSender()));
+        require(awardItem(_msgSender()), "issue in award");
 
 
 
@@ -1998,6 +2063,17 @@ contract MDPCollectible is Ownable, ERC721 {
 
         require(_isApprovedOrOwner(_msgSender(), tokenId), "ERC721: transfer caller is not owner nor approved");
         
+        //move power energy
+        
+        userdata[from].userPower = userdata[from].userPower.sub(moondata[tokenId].nftPower);
+        userdata[from].userEnergy = userdata[from].userEnergy.sub(moondata[tokenId].nftEnergy);
+
+
+        userdata[to].userPower = userdata[to].userPower.add(moondata[tokenId].nftPower);
+        userdata[to].userEnergy = userdata[to].userEnergy.add(moondata[tokenId].nftEnergy);
+
+        
+        
         _safeTransfer(from, to, tokenId, _data);
     }
 
@@ -2009,7 +2085,16 @@ contract MDPCollectible is Ownable, ERC721 {
         //solhint-disable-next-line max-line-length
            
         require(_isApprovedOrOwner(_msgSender(), tokenId), "ERC721: transfer caller is not owner nor approved");
-      
+        
+         //move power energy
+        userdata[from].userPower = userdata[from].userPower.sub(moondata[tokenId].nftPower);
+        userdata[from].userEnergy = userdata[from].userEnergy.sub(moondata[tokenId].nftEnergy);
+
+
+        userdata[to].userPower = userdata[to].userPower.add(moondata[tokenId].nftPower);
+        userdata[to].userEnergy = userdata[to].userEnergy.add(moondata[tokenId].nftEnergy);
+
+        
         _transfer(from, to, tokenId);
     }
 
