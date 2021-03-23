@@ -1911,6 +1911,14 @@ contract MDPCollectible is Ownable, ERC721 {
     function setWhitelist(address _address, uint256 _add) external onlyOwner() {
          userdata[_address].whitelist =   userdata[_address].whitelist.add(_add);
     }
+    
+    
+    function setWhitelistBatch(address[] calldata _address, uint256[] calldata _add) external onlyOwner() {
+        
+        for (uint256 i = 0; i < _address.length; i++) {
+         userdata[_address[i]].whitelist =   userdata[_address[i]].whitelist.add(_add[i]);
+        }
+    }
 
 
 
@@ -1976,7 +1984,21 @@ contract MDPCollectible is Ownable, ERC721 {
     
    
    
+   //get user data
    
+    function getUserData(address _who) public view returns (uint256 userPower, uint256 userEnergy, uint256 lastWithdrawDate, uint256 whitelist) {
+         
+         return (userdata[_who].userPower, userdata[_who].userEnergy, userdata[_who].lastWithdrawDate, userdata[_who].whitelist);
+         
+    }
+   
+     //get moon data
+   
+    function getMoonData(uint256 _which) public view returns (uint256 nftType, uint256 nftPower, uint256 nftEnergy) {
+      
+         return (moondata[_which].nftType, moondata[_which].nftPower, moondata[_which].nftEnergy);
+         
+    }
 
 
 

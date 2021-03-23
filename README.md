@@ -36,7 +36,9 @@ Reward Pool deployed: https://etherscan.io/address/0x6dBD235B85Cb1678FB5ECF56029
 
 DAO deployed: https://etherscan.io/address/0x839DDc270252A63072c30b8eE277D685301251a3
 
-NFT deployed: Soon
+NFT deployed: https://etherscan.io/address/0x3eaec957ff5db98fe3931e2c3b3103debf945ae0
+
+NFT Random (unverified): https://etherscan.io/address/0x9d6477c89c2572d6818e745c6fb9b938d3a1e078
 
 ******************************************
 
