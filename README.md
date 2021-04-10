@@ -40,7 +40,7 @@ NFT deployed: https://etherscan.io/address/0x3eaec957ff5db98fe3931e2c3b3103debf9
 
 NFT Random (unverified): https://etherscan.io/address/0x9d6477c89c2572d6818e745c6fb9b938d3a1e078
 
-Startegy (NFT boost): https://etherscan.io/address/0xEA1f247aB4c90896EBe7b3af3376258A0dEf865B
+Strategy (NFT boost): https://etherscan.io/address/0xEA1f247aB4c90896EBe7b3af3376258A0dEf865B
 
 ******************************************
 
