@@ -199,7 +199,7 @@ contract Strategy {
 
   
 
-    constructor(NFT _Nft) public {
+    constructor(NFT _Nft) {
         
         nftContract = _Nft;
 
@@ -226,7 +226,7 @@ contract Strategy {
         uint256  intervalDiff = (block.timestamp).sub(lastWithdrawDate);
 
 
-        if (intervalDiff.mul(1 days) >= medianEnergy){
+        if (intervalDiff.div(1 days) >= medianEnergy){
 
             //full userPower
 
@@ -236,18 +236,18 @@ contract Strategy {
             
           
 
-            _perc = userPower.sub(userPower.mul((medianEnergy.sub(intervalDiff.mul(1 days))).div(medianEnergy)));
+            _perc = userPower.sub(userPower.mul((medianEnergy.sub(intervalDiff.div(1 days))).div(medianEnergy)));
 
 
         }
 
 
-        if(_perc.mul(10) > 4166){
+        if(_perc.mul(5) > 4166){
             
            _perc = 4166; 
         }else{
             
-            _perc = _perc.mul(10);
+            _perc = _perc.mul(5);
         }
 
 
