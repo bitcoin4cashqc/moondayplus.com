@@ -26,7 +26,11 @@ May your strategy lead you to victory!
 
 ******************************************
 
+
 Official Website: https://www.moondayplus.com
+
+
+***************{Ethereum}*****************
 
 IMO deployed: https://etherscan.io/address/0x8aB4657A160c1F8a78a03AC598E5F3C2Fd0c2882
 
@@ -42,7 +46,13 @@ NFT Random (unverified): https://etherscan.io/address/0x9d6477c89c2572d6818e745c
 
 Strategy (NFT boost): https://etherscan.io/address/0xEA1f247aB4c90896EBe7b3af3376258A0dEf865B
 
+
+****************{Binance}******************
+
+SOOOOOOON.............
+
 ******************************************
+
 
 - 4 days offering ( end @ 01/30/2021 @ 8:00pm (UTC) )
 
